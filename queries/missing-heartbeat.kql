@@ -1,0 +1,5 @@
+// Vms whose monitoring angent hasn't reported for 15 or more minutes
+// Missing heartbeat means the VM is stopped or the agent is broken
+Heartbeat
+| summarize LastHeartbeat = max(TimeGenerated) by Computer
+| where LastHeartbeat < ago(15m)
