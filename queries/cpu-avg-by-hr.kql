@@ -1,0 +1,5 @@
+// Average CPU per VM per hour
+// Useful for spotting VMs that run hot over time, not just in short spikes
+Perf
+| where CounterName == "% Processor Time"
+| summarize AvgCpu = avg(CounterValue) by Computer, bin(TimeGenerated, 1h)
