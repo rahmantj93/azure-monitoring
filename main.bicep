@@ -94,3 +94,19 @@ resource vmDeleteAlert 'Microsoft.Insights/activityLogAlerts@2020-10-01' = {
     }
   }
 }
+
+resource vault 'Microsoft.RecoveryServices/vaults@2024-02-01' = {
+  name: 'rsv-monitoring'
+  location: location
+  sku: {
+    name: 'RS0'
+    tier: 'Standard'
+  }
+  properties: {
+    publicNetworkAccess: 'Enabled'
+    redundancySettings: {
+      standardTierStorageRedundancy: 'LocallyRedundant'
+      crossRegionRestore: 'Disabled'
+    }
+  }
+}
