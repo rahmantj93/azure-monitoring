@@ -1,0 +1,6 @@
+// Count of error-level (or worse) Syslog messages per VM in the last 24 hours.
+// Useful for finding which VM is producing the most errors.
+Syslog
+| where TimeGenerated > ago(24h) and SeverityLevel in ("emerg", "alert", "crit", "err")
+| summarize ErrorCount = count() by Computer
+| sort by ErrorCount desc
