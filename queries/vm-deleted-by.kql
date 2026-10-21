@@ -1,0 +1,5 @@
+// Shows the person who deleted a VM
+// Run for investigating an unexpected deletion
+AzureActivity
+| where OperationNameValue =~ "Microsoft.Compute/virtualMachines/delete"
+| project TimeGenerated, Caller, ResourceGroup, _ResourceId, ActivityStatusValue
