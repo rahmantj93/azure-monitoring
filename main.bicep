@@ -27,3 +27,39 @@ resource actionGroup 'Microsoft.Insights/actionGroups@2023-01-01' = {
     ]
   }
 }
+
+resource cpuAlert 'Microsoft.Insights/metricAlerts@2018-03-01' = {
+  name: 'alert-vm-high-cpu'
+  location: 'global'
+  properties: {
+    description: 'Average CPU above 80% for 15 minutes on any VM in this resource group'
+    severity: 2
+    enabled: true
+    scopes: [
+      resourceGroup().id
+    ]
+    targetResourceType: 'Microsoft.Compute/virtualMachines'
+    targetResourceRegion: location
+    evaluationFrequency: 'PT5M'
+    windowSize: 'PT15M'
+    criteria: {
+      'odata.type': 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
+      allOf: [
+        {
+          criterionType: 'StaticThresholdCriterion'
+          name: 'HighCpu'
+          metricName: 'Percentage CPU'
+          metricNamespace: 'Microsoft.Compute/virtualMachines'
+          operator: 'GreaterThan'
+          threshold: 80
+          timeAggregation: 'Average'
+        }
+      ]
+    }
+    actions: [
+      {
+        actionGroupId: actionGroup.id
+      }
+    ]
+  }
+}
