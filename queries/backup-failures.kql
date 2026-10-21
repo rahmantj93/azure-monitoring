@@ -1,0 +1,5 @@
+// Backup jobs that failed in the last 7 days, with their error code
+// Useful as a daily check that every protected VM actually got backed up
+AddonAzureBackupJobs
+| where TimeGenerated > ago(7d) and JobOperation == "Backup" and JobStatus == "Failed"
+| project TimeGenerated, BackupItemFriendlyName, JobFailureCode, VaultName
