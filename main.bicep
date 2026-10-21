@@ -142,3 +142,25 @@ resource vmPolicy 'Microsoft.RecoveryServices/vaults/backupPolicies@2024-02-01' 
     }
   }
 }
+
+var backupLogCategories = [
+  'CoreAzureBackup'
+  'AddonAzureBackupJobs'
+  'AddonAzureBackupPolicy'
+  'AddonAzureBackupStorage'
+  'AddonAzureBackupProtectedInstance'
+  'AzureBackupOperations'
+]
+
+resource vaultDiagnostics 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
+  name: 'diag-vault-to-law'
+  scope: vault
+  properties: {
+    workspaceId: workspace.id
+    logAnalyticsDestinationType: 'Dedicated'
+    logs: [for category in backupLogCategories: {
+      category: category
+      enabled: true
+    }]
+  }
+}
