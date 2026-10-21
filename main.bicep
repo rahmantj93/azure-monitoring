@@ -110,3 +110,35 @@ resource vault 'Microsoft.RecoveryServices/vaults@2024-02-01' = {
     }
   }
 }
+
+resource vmPolicy 'Microsoft.RecoveryServices/vaults/backupPolicies@2024-02-01' = {
+  parent: vault
+  name: 'policy-vm-enhanced-4h'
+  properties: {
+    backupManagementType: 'AzureIaasVM'
+    policyType: 'V2'
+    instantRpRetentionRangeInDays: 7
+    timeZone: 'UTC'
+    schedulePolicy: {
+      schedulePolicyType: 'SimpleSchedulePolicyV2'
+      scheduleRunFrequency: 'Hourly'
+      hourlySchedule: {
+        interval: 4
+        scheduleWindowStartTime: '2026-01-01T22:00:00Z'
+        scheduleWindowDuration: 24
+      }
+    }
+    retentionPolicy: {
+      retentionPolicyType: 'LongTermRetentionPolicy'
+      dailySchedule: {
+        retentionTimes: [
+          '2026-01-01T22:00:00Z'
+        ]
+        retentionDuration: {
+          count: 30
+          durationType: 'Days'
+        }
+      }
+    }
+  }
+}
