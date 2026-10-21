@@ -63,3 +63,34 @@ resource cpuAlert 'Microsoft.Insights/metricAlerts@2018-03-01' = {
     ]
   }
 }
+
+resource vmDeleteAlert 'Microsoft.Insights/activityLogAlerts@2020-10-01' = {
+  name: 'alert-vm-deleted'
+  location: 'global'
+  properties: {
+    description: 'A virtual machine was deleted in this resource group'
+    enabled: true
+    scopes: [
+      resourceGroup().id
+    ]
+    condition: {
+      allOf: [
+        {
+          field: 'category'
+          equals: 'Administrative'
+        }
+        {
+          field: 'operationName'
+          equals: 'Microsoft.Compute/virtualMachines/delete'
+        }
+      ]
+    }
+    actions: {
+      actionGroups: [
+        {
+          actionGroupId: actionGroup.id
+        }
+      ]
+    }
+  }
+}
