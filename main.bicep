@@ -83,6 +83,10 @@ resource vmDeleteAlert 'Microsoft.Insights/activityLogAlerts@2020-10-01' = {
           field: 'operationName'
           equals: 'Microsoft.Compute/virtualMachines/delete'
         }
+       {
+          field: 'status'
+          equals: 'Succeeded'
+        }
       ]
     }
     actions: {

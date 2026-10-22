@@ -2,4 +2,4 @@
 // Useful as a daily check that every protected VM actually got backed up
 AddonAzureBackupJobs
 | where TimeGenerated > ago(7d) and JobOperation == "Backup" and JobStatus == "Failed"
-| project TimeGenerated, BackupItemFriendlyName, JobFailureCode, VaultName
+| project TimeGenerated, BackupItemFriendlyName, JobFailureCode, ResourceId

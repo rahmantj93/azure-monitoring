@@ -30,7 +30,7 @@ flowchart LR
     LAW --> KQL
 ```
 
-Dotted lines are set up per VM and are not created by this template: assigning VMs to the backup policy, and sending their data to the workspace with the Azure Monitor Agent.
+Dotted lines are set up per VM and are not created by this template: assigning VMs to the backup policy, and sending their data to the workspace with the Azure Monitor Agent. `vm-deleted-by.kql` also needs the subscription's Activity Log sent to the workspace through a subscription-level diagnostic setting, which this template doesn't create.
 
 ## Design decisions
 
